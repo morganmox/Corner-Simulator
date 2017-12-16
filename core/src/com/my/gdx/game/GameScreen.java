@@ -1,5 +1,7 @@
 package com.my.gdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ScreenAdapter;
@@ -8,51 +10,52 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 public class GameScreen extends ScreenAdapter {
 	
-	private PacmanGame pacmangame;
-	private Texture pacmanImg;
+	private PikemanGame pikemangame;
+	private Texture pikemanImg;
 	private Texture puckmanImg;
 	private BitmapFont font;
-	private Pacman pacman;
+	private Pikeman pikeman;
 	private Puckman puckman;
-	private int score = 0;
-	Array enemyarray = new Array();
+	private int time = 0,count = -1;
+	ArrayList<Puckman> enemyarray = new ArrayList<Puckman>();
+	int puckmanx[] = {-33,350,700,700,700,350,-33,-33};
+	int puckmany[] = {-33,-33,-33,350,700,700,700,350};
 
-	public GameScreen(PacmanGame pacmanGame) {
-		this.pacmangame = pacmanGame;
+	public GameScreen(PikemanGame pikemanGame) {
+		this.pikemangame = pikemanGame;
 		font = new BitmapFont();
-		pacmanImg = new Texture("notpacman.png");//pic
+		pikemanImg = new Texture("notpacman.png");//pic
 		puckmanImg = new Texture("notpacmanenemy.png");//pic
-		pacman = new Pacman(100,100);//state
+		pikeman = new Pikeman(350,350);//state
 	}
 
 	private void update(float delta) {
-		Vector2 pos = pacman.getPosition();
-		score ++;
-		if(score%200==1)
+		Vector2 pos = pikeman.getPosition();
+		time ++;
+		if(time%200==1)
 		{
-			puckman = new Puckman(500,500);//state
+			count++;
+			puckman = new Puckman(puckmanx[count%8],puckmany[count%8]);//state
 			enemyarray.add(puckman);
 		}
 		
 		for(Object t : enemyarray)
-		{
-			((Puckman) t).chase(pos.x ,pos.y);
-		}
+			((Puckman) t).chase(pos.x ,pos.y,enemyarray);
+		
 		if(Gdx.input.isKeyPressed(Keys.LEFT)&&pos.x>0) {
-			pacman.move(Pacman.DIRECTION_LEFT);
+			pikeman.move(Pikeman.DIRECTION_LEFT);
 		}
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)&&pos.x<670) {
-			pacman.move(Pacman.DIRECTION_RIGHT);
+			pikeman.move(Pikeman.DIRECTION_RIGHT);
 		}
 		if(Gdx.input.isKeyPressed(Keys.UP)&&pos.y<670) {
-			pacman.move(Pacman.DIRECTION_UP);
+			pikeman.move(Pikeman.DIRECTION_UP);
 		}
 		if(Gdx.input.isKeyPressed(Keys.DOWN)&&pos.y>0) {
-			pacman.move(Pacman.DIRECTION_DOWN);
+			pikeman.move(Pikeman.DIRECTION_DOWN);
 		}
 	}
 
@@ -61,15 +64,15 @@ public class GameScreen extends ScreenAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		update(delta);
-		SpriteBatch batch = pacmangame.batch;
+		SpriteBatch batch = pikemangame.batch;
 		batch.begin();
-		Vector2 pos = pacman.getPosition();
-		batch.draw(pacmanImg,pos.x,pos.y);//(pic,statex,statey)
+		Vector2 pos = pikeman.getPosition();
+		batch.draw(pikemanImg,pos.x,pos.y);//(pic,statex,statey)
 		for(Object t : enemyarray)
 		{
 			batch.draw(puckmanImg,((Puckman) t).getX(),((Puckman) t).getY());
 		}
-		font.draw(batch,"Time : "+score,600,60);
+		font.draw(batch,"Time : "+time,600,60);
 		batch.end();
 	}
 

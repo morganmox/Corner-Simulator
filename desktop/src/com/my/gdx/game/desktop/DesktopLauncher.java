@@ -2,13 +2,13 @@ package com.my.gdx.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.my.gdx.game.PacmanGame;
+import com.my.gdx.game.PikemanGame;
 
 public class DesktopLauncher {
     public static void main (String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = 700;
         config.height = 700;
-        new LwjglApplication(new PacmanGame(), config);
+        new LwjglApplication(new PikemanGame(), config);
     }
 }

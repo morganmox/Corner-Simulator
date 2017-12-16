@@ -1,10 +1,12 @@
 package com.my.gdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 
 public class Puckman {
 	private Vector2 position;
-	
+	int speed = 1;
 	public Puckman(int x,int y)
 	{
 		position = new Vector2(x,y);
@@ -23,23 +25,50 @@ public class Puckman {
 		float y = position.y;
 		return y;
 	}
-	public void chase(float x,float y)
+	public void chase(float x,float y,ArrayList<Puckman>team)
 	{
-		if(x>=position.x)
+		if(x>=position.x)//right
 		{
-			position.x+=2;
+			position.x+=speed;
+			if(!canmoveindirection(1,team))
+				position.x-=speed;
 		}
-		else
+		if(x<=position.x)//left
 		{
-			position.x-=2;
+			position.x-=speed;
+			if(!canmoveindirection(1,team))
+				position.x+=speed;
 		}
-		if(y>position.y)
+		if(y>=position.y)//up
 		{
-			position.y+=2;
+			position.y+=speed;
+			if(!canmoveindirection(1,team))
+				position.y-=speed;
 		}
-		else
+		if(y<=position.y)//down
 		{
-			position.y-=2;
+			position.y-=speed;
+			if(!canmoveindirection(1,team))
+				position.y+=speed;
+			
 		}
+		
+	}
+	public boolean canmoveindirection(int direction,ArrayList<Puckman>team)
+	{
+		for(int i = 0;i<team.size();i++)
+		{
+			Object unit = team.get(i);
+			if(((Puckman) unit).getPosition()==this.getPosition())
+				continue;
+			else
+			{
+				if(this.getX()<((Puckman) unit).getX()+33&&this.getX()+33>((Puckman) unit).getX()&&this.getY()<((Puckman) unit).getY()+33&&this.getY()+33>((Puckman) unit).getY())
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
