@@ -9,9 +9,10 @@ public class WorldRenderer {
 	private World world;
 	private Texture pikemanImg;
 	private Texture puckmanImg;
-	private float posx,posy;
+	private Texture bulletImg;
 	private BitmapFont font;
 	private ArrayList<Puckman> enemyarray;
+	private ArrayList<Bullet> bulletarray;
 	private int finalscore = 0;
 	
 	public WorldRenderer(PikemanGame pikemanGame,World world)
@@ -20,7 +21,9 @@ public class WorldRenderer {
 		
 		pikemanImg = new Texture("pikeman.png");
 		puckmanImg = new Texture("puckman.png");
+		bulletImg = new Texture("dot.png");
 		enemyarray = world.getPuck();
+		bulletarray = world.getBullet();
 		font = new BitmapFont();
 
 	}
@@ -28,23 +31,27 @@ public class WorldRenderer {
 	public void render(float delta, SpriteBatch batch) {
 		if(!world.isGameover()) {
 			batch.begin();
-			posx = world.getPikex();
-			posy = world.getPikey();
-			batch.draw(pikemanImg,posx,posy);
+			batch.draw(pikemanImg,world.getPike().x,world.getPike().y);
 			for(Object t : enemyarray)
 			{
 				batch.draw(puckmanImg,((Puckman) t).getX(),((Puckman) t).getY());
 			}
-			font.draw(batch, "Life : "+world.getLife(), 600,60);
-			font.draw(batch, "Time : "+world.getTime(), 600,40);
+			for(Object t : bulletarray)
+			{
+				batch.draw(bulletImg,((Bullet) t).getX(),((Bullet) t).getY());
+			}
+			font.draw(batch, "Life : "+world.getLife(), 580,60);
+			font.draw(batch, "Score : "+world.getScore(), 580,40);
+			font.draw(batch, "Snowball (Z) : "+!world.havebullet(), 580,20);
 			batch.end();
-			finalscore = world.getTime();
+			finalscore = world.getScore();
 		}
 		else
 		{
 			batch.begin();
 			font.draw(batch, "GAME OVER", 300,370);
 			font.draw(batch,"Final Score : "+finalscore,290,350);
+			font.draw(batch, "Press Space to play again.", 260,330);
 			batch.end();
 		}
 	}

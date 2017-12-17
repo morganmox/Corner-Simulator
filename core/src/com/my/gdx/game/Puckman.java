@@ -71,4 +71,12 @@ public class Puckman {
 		}
 		return true;
 	}
+	public boolean ishitbyabullet(Bullet bullet)
+	{
+		if(this.getX()<bullet.getX()+18&&this.getX()+fat>bullet.getX()&&this.getY()<bullet.getY()+18&&this.getY()+fat>bullet.getY())
+		{
+			return true;
+		}
+		return false;
+	}
 }
