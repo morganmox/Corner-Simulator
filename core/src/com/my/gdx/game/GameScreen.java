@@ -1,6 +1,7 @@
 package com.my.gdx.game;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -19,26 +20,27 @@ public class GameScreen extends ScreenAdapter {
 	private BitmapFont font;
 	private Pikeman pikeman;
 	private Puckman puckman;
-	private int time = 0,count = -1;
+	private int time = 0,dir,life = 200;
 	ArrayList<Puckman> enemyarray = new ArrayList<Puckman>();
-	int puckmanx[] = {-33,350,700,700,700,350,-33,-33};
-	int puckmany[] = {-33,-33,-33,350,700,700,700,350};
+	int puckmanx[] = {-66,317,733,733,733,350,-66,-66};
+	int puckmany[] = {-66,-66,-66,350,733,733,733,317};
+	Random dice = new Random();
 
 	public GameScreen(PikemanGame pikemanGame) {
 		this.pikemangame = pikemanGame;
 		font = new BitmapFont();
-		pikemanImg = new Texture("notpacman.png");//pic
-		puckmanImg = new Texture("notpacmanenemy.png");//pic
-		pikeman = new Pikeman(350,350);//state
+		pikemanImg = new Texture("pikeman.png");
+		puckmanImg = new Texture("puckman.png");
+		pikeman = new Pikeman(350,350);
 	}
 
 	private void update(float delta) {
 		Vector2 pos = pikeman.getPosition();
 		time ++;
-		if(time%200==1)
+		if(time%100==1)
 		{
-			count++;
-			puckman = new Puckman(puckmanx[count%8],puckmany[count%8]);//state
+			dir = dice.nextInt(8);
+			puckman = new Puckman(puckmanx[dir],puckmany[dir]);
 			enemyarray.add(puckman);
 		}
 		
@@ -57,6 +59,10 @@ public class GameScreen extends ScreenAdapter {
 		if(Gdx.input.isKeyPressed(Keys.DOWN)&&pos.y>0) {
 			pikeman.move(Pikeman.DIRECTION_DOWN);
 		}
+		if(pikeman.hit(enemyarray))
+		{
+			life--;
+		}
 	}
 
 	@Override
@@ -67,12 +73,13 @@ public class GameScreen extends ScreenAdapter {
 		SpriteBatch batch = pikemangame.batch;
 		batch.begin();
 		Vector2 pos = pikeman.getPosition();
-		batch.draw(pikemanImg,pos.x,pos.y);//(pic,statex,statey)
+		batch.draw(pikemanImg,pos.x,pos.y);
 		for(Object t : enemyarray)
 		{
 			batch.draw(puckmanImg,((Puckman) t).getX(),((Puckman) t).getY());
 		}
-		font.draw(batch,"Time : "+time,600,60);
+		font.draw(batch,"Life : "+life,600,60);
+		font.draw(batch,"Time : "+time,600,40);
 		batch.end();
 	}
 

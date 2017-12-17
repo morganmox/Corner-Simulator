@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Puckman {
 	private Vector2 position;
-	int speed = 1;
+	int speed = 1,fat = 33;
 	public Puckman(int x,int y)
 	{
 		position = new Vector2(x,y);
@@ -63,7 +63,7 @@ public class Puckman {
 				continue;
 			else
 			{
-				if(this.getX()<((Puckman) unit).getX()+33&&this.getX()+33>((Puckman) unit).getX()&&this.getY()<((Puckman) unit).getY()+33&&this.getY()+33>((Puckman) unit).getY())
+				if(this.getX()<((Puckman) unit).getX()+fat&&this.getX()+fat>((Puckman) unit).getX()&&this.getY()<((Puckman) unit).getY()+fat&&this.getY()+fat>((Puckman) unit).getY())
 				{
 					return false;
 				}
