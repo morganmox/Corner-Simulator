@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PikemanGame extends Game {
-    public SpriteBatch batch;
+    SpriteBatch batch;
 
     @Override
     public void create () {
