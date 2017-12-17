@@ -112,6 +112,7 @@ public class World {
 				life = 200;
 				time = 0;
 				score = 0;
+				charge = 0;
 				pikeman = new Pikeman(350,350);
 				enemyarray.clear();
 				bulletarray.clear();

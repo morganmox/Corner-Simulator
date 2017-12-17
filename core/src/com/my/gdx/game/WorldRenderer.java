@@ -40,9 +40,9 @@ public class WorldRenderer {
 			{
 				batch.draw(bulletImg,((Bullet) t).getX(),((Bullet) t).getY());
 			}
-			font.draw(batch, "Life : "+world.getLife(), 580,60);
-			font.draw(batch, "Score : "+world.getScore(), 580,40);
-			font.draw(batch, "Snowball (Z) : "+!world.havebullet(), 580,20);
+			font.draw(batch, "Life : "+world.getLife(), 570,60);
+			font.draw(batch, "Score : "+world.getScore(), 570,40);
+			font.draw(batch, "Snowball (Z) : "+!world.havebullet(), 570,20);
 			batch.end();
 			finalscore = world.getScore();
 		}
